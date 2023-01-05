@@ -2,7 +2,7 @@ const fs = require("fs/promises");
 const path = require("path");
 const shortid = require('shortid');
 
-const contactsPath = path.resolve(__dirname, "./models/contacts.json");
+const contactsPath = path.resolve("./models/contacts.json");
 
 const listContacts = async () => {
   const contactsRaw = await fs.readFile(contactsPath);

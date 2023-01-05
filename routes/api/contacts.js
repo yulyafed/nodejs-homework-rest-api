@@ -13,7 +13,7 @@ const {
 
 router.get("/", async (_, res, __) => {
   const contacts = await listContacts();
-  return res.status(200).json([ contacts ]);
+  res.status(200).json({ contacts });
 });
 
 router.get("/:contactId", async (req, res, next) => {
@@ -23,7 +23,7 @@ router.get("/:contactId", async (req, res, next) => {
     // return next(ErrorHttp(404, "Not found"));
     return res.status(404).json("Not found");
   }
-  return res.status(200).json({ contact });
+   res.status(200).json({ contact });
 });
 
 router.post("/", validation(contactsSchema), async (req, res, next) => {
@@ -38,7 +38,7 @@ router.post("/", validation(contactsSchema), async (req, res, next) => {
       
     }
     const contact = await addContact(name, email, phone, res);
-    return res.json({ id, contact });
+    res.json({ id, contact });
   } catch (error) {
     next(error);
   }
@@ -52,7 +52,7 @@ router.delete("/:contactId", async (req, res, next) => {
       // return next(ErrorHttp(404, "Not found"));
        return res.status(404).json("Not found")
     }
-    return res.status(200).json("contact deleted");
+    res.status(200).json("contact deleted");
   } catch (error) {
     next(error);
   }
@@ -70,7 +70,7 @@ router.put("/:contactId", validation(contactsSchema), async (req, res, next) => 
     if (!contact) {
       return res.status(404).json("Not found");
     }
-    return res.status(200).json( contact, "update your contacts" );
+    res.status(200).json( contact, "update your contacts" );
   } catch (error) {
     next(error);
   }
