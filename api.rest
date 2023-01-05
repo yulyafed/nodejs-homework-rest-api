@@ -3,7 +3,7 @@ GET http://localhost:3001/api/contacts
 ###
 
 # Get Contact by id
-GET http://localhost:3001/api/contacts/1
+GET http://localhost:3001/api/contacts/10
 ###
 
 # Post Contact 
@@ -18,15 +18,15 @@ content-type: application/json
 ###
 
 # Delete Contact 
-DELETE http://localhost:3001/api/contacts/1
+DELETE http://localhost:3001/api/contacts/7
 ###
 
-# Put Contacts 
-PUT http://localhost:3001/api/contacts/2
+# Put Contact
+PUT http://localhost:3001/api/contacts/4
 content-type: application/json
 
 {
-"name": "Ivan",
+"name": "Ivangghhh",
 "email": "2@gmail.com",
 "phone": "(098) 777-4566"
 }

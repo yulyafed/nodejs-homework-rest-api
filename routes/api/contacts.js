@@ -11,23 +11,29 @@ const {
 } = require("../../models/contacts");
 
 router.get("/", async (_, res, __) => {
-  const contacts = await listContacts();
-  res.status(200).json({ contacts });
-});
-
-router.get("/:contactId", async (req, res, next) => {
-  const contact = await getContactById(req.params.contactId);
-
-  if (!contact) {
-    // return next(ErrorHttp(404, "Not found"));
-    return res.status(404).json("Not found");
+  try {
+    const contacts = await listContacts();
+    res.status(200).json({ contacts });
+  } catch (error) {
+    next(error);
   }
-   res.status(200).json({ contact });
-});
+  });
+
+router.get("/:contactId", async (req, res, __) => {
+  try {
+    const contact = await getContactById(req.params.contactId);
+
+    if (!contact) {
+      return res.status(404).json("Not found");
+    }
+    res.status(200).json({ contact });
+  } catch (error) {
+    next(error);
+  }
+  });
 
 router.post("/", validation(contactsSchema), async (req, res, next) => {
   try {
-
     const contact = await addContact(req.body);
     res.json(contact);
     if (contact) {
@@ -43,8 +49,7 @@ router.delete("/:contactId", async (req, res, next) => {
     const { contactId } = req.params;
     const contact = await removeContact(contactId);
     if (!contact) {
-      // return next(ErrorHttp(404, "Not found"));
-       return res.status(404).json("Not found")
+      return res.status(404).json("Not found")
     }
     res.status(200).json("contact deleted");
   } catch (error) {
