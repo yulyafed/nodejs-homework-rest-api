@@ -29,7 +29,7 @@ const removeContact = async (contactId) => {
 
 const addContact = async (body) => {
   const id = shortid.generate();
-  const contact = { id, body };
+  const contact = { id, ...body };
   const contacts = await listContacts();
   contacts.push(contact);
   await writeContacts(contacts);
@@ -38,7 +38,7 @@ const addContact = async (body) => {
 }
 
 const updateContact = async (contactId, body) => {
-  const contacts = await listContacts(contacts);
+  const contacts = await listContacts();
   const index = contacts.findIndex((contact) => contact.id === contactId);
   if (index === -1) {
     return false;

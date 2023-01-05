@@ -1,0 +1,33 @@
+# Get Contacts
+GET http://localhost:3001/api/contacts
+###
+
+# Get Contact by id
+GET http://localhost:3001/api/contacts/1
+###
+
+# Post Contact 
+POST http://localhost:3001/api/contacts
+content-type: application/json
+
+{
+"name": "Anna",
+"email": "1@gmail.com",
+"phone": "(098) 689-4566"
+}
+###
+
+# Delete Contact 
+DELETE http://localhost:3001/api/contacts/1
+###
+
+# Put Contacts 
+PUT http://localhost:3001/api/contacts/2
+content-type: application/json
+
+{
+"name": "Ivan",
+"email": "2@gmail.com",
+"phone": "(098) 777-4566"
+}
+###
