@@ -12,4 +12,4 @@ const validation = (contactsSchema) => {
     };
 };
 
-module.exports = { validation} ;
+module.exports = validation ;
