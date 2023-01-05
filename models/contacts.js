@@ -38,18 +38,14 @@ const addContact = async (body) => {
 }
 
 const updateContact = async (contactId, body) => {
-  try {
-    const contacts = JSON.parse(await fs.readFile(contactsPath, "utf8"));
-    const index = contacts.findIndex((contact) => contact.id === contactId);
-    if (index === -1) {
-      return false;
-    }
-    contacts.splice(index, 1, { id: contactId, ...body });
-    await writeContacts(contacts);
-    return contacts[index];
-  } catch (error) {
-    next(error);
+  const contacts = await listContacts(contacts);
+  const index = contacts.findIndex((contact) => contact.id === contactId);
+  if (index === -1) {
+    return false;
   }
+  contacts.splice(index, 1, { id: contactId, ...body });
+  await writeContacts(contacts);
+  return contacts[index];
 }
 
 module.exports = {
