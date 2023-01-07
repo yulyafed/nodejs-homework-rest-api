@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { validation } = require("../../validation");
-const { contactsSchema } = require("../../contactsSchema");
+const { validation, updateValidation } = require("../../validation");
+const { contactsSchema, contactsUpdateSchema } = require("../../contactsSchema");
 const {
   listContacts,
   getContactById,
@@ -10,7 +10,7 @@ const {
   updateContact,
 } = require("../../models/contacts");
 
-router.get("/", async (_, res, __) => {
+router.get("/", async (req, res, next) => {
   try {
     const contacts = await listContacts();
     res.status(200).json({ contacts });
@@ -19,12 +19,12 @@ router.get("/", async (_, res, __) => {
   }
   });
 
-router.get("/:contactId", async (req, res, __) => {
+router.get("/:contactId", async (req, res, next) => {
   try {
     const contact = await getContactById(req.params.contactId);
 
     if (!contact) {
-      return res.status(404).json("Not found");
+      return res.status(404).json({message: "Not found"});
     }
     res.status(200).json({ contact });
   } catch (error) {
@@ -35,10 +35,10 @@ router.get("/:contactId", async (req, res, __) => {
 router.post("/", validation(contactsSchema), async (req, res, next) => {
   try {
     const contact = await addContact(req.body);
-    res.json(contact);
-    if (contact) {
-      return res.status(400).json("missing required name field");
-    }
+      if (!contact) {
+        return res.status(400).json({ message: "missing required name field"});
+        }
+    return res.json(contact);
   } catch (error) {
     next(error);
   }
@@ -49,20 +49,20 @@ router.delete("/:contactId", async (req, res, next) => {
     const { contactId } = req.params;
     const contact = await removeContact(contactId);
     if (!contact) {
-      return res.status(404).json("Not found")
+      return res.status(404).json({message: "Not found"})
     }
-    res.status(200).json("contact deleted");
+    res.status(200).json({ message: "contact deleted" });
   } catch (error) {
     next(error);
   }
 });
 
-router.put("/:contactId", validation(contactsSchema), async (req, res, next) => {
+router.put("/:contactId", updateValidation(contactsUpdateSchema), async (req, res, next) => {
   try {
     const { contactId } = req.params;
     const contact = await updateContact(contactId, req.body);
     if (!contact) {
-      return res.status(404).json("Not found");
+      return res.status(404).json({ message: "Not found"});
     }
     res.status(200).json( contact );
   } catch (error) {

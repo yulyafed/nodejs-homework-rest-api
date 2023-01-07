@@ -1,7 +1,7 @@
-const { contactsSchema } = require("../contactsSchema");
+const { contactsSchema, contactsUpdateSchema } = require("../contactsSchema");
 
 const validation = (contactsSchema) => {
-    return (req, _, next) => {
+    return (req, res, next) => {
         const { error } = contactsSchema.validate(req.body);
         if (error) {
             error.status = 400;
@@ -12,4 +12,16 @@ const validation = (contactsSchema) => {
     };
 };
 
-module.exports = validation ;
+const updateValidation = (contactsUpdateSchema) => {
+    return (req, res, next) => {
+        const { error } = contactsUpdateSchema.validate(req.body);
+        if (error) {
+            error.status = 400;
+            next(error);
+            return;
+        }
+        next();
+    };
+};
+
+module.exports =  validation, updateValidation  ;

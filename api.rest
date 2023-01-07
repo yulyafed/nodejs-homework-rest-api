@@ -18,15 +18,15 @@ content-type: application/json
 ###
 
 # Delete Contact 
-DELETE http://localhost:3001/api/contacts/7
+DELETE http://localhost:3001/api/contacts/10
 ###
 
 # Put Contact
-PUT http://localhost:3001/api/contacts/4
+PUT http://localhost:3001/api/contacts/9
 content-type: application/json
 
 {
-"name": "Ivangghhh",
+"name": "Ivanf",
 "email": "2@gmail.com",
 "phone": "(098) 777-4566"
 }

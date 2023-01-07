@@ -12,5 +12,4 @@ const contactsUpdateSchema = Joi.object({
     phone: Joi.string().min(11).max(15),
 });
 
-
-module.exports =  contactsSchema ;
+module.exports =  contactsSchema, contactsUpdateSchema  ;
