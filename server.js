@@ -1,12 +1,9 @@
 const mongoose = require("mongoose");
-
 const dotenv = require("dotenv");
+const app = require('./app');
 
 dotenv.config();
-
 mongoose.set("strictQuery", false);
-
-const app = require('./app');
 
 const PORT = process.env.PORT || 3001;
 
@@ -21,29 +18,7 @@ async function main() {
       console.log(`Server running. Use our API on port: ${PORT}`)
     })
 
-    const schema = mongoose.Schema(
-      {
-        name: {
-          type: String,
-          required: [true, 'Set name for contact'],
-        },
-        email: {
-          type: String,
-        },
-        phone: {
-          type: String,
-        },
-        favorite: {
-          type: Boolean,
-          default: false,
-        },
-      }
-    );
-
-    const Contact = mongoose.model("contact", schema);
-     
-
-  } catch (error) {
+       } catch (error) {
     console.error("Error connecting to Database", error.message);
     process.exit(1);
   }
