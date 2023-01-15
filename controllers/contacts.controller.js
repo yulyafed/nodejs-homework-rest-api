@@ -1,35 +1,30 @@
 const { Contact } = require("../models/contacts");
 
-async function listContacts(req, res) {
+async function listContacts() {
     const contacts = await Contact.find();
-    res.json(contacts);
+    return contacts;
 }
 
-async function getContactById(req, res, next) {
-    const { id } = req.params;
-    const contact = await Contact.findById(id);
-    return res.json(contact);
+async function getContactById(contactId) {
+    const contact = await Contact.findById(contactId);
+    return contact;
 }
 
-async function addContact(req, res, next) {
-    const { name,email,phone,favorite } = req.body;
-    const newContact = await Contact.create({
-        name, email, phone, favorite,
+async function addContact(name, email, phone, favorite) {
+       const newContact = await Contact.create({
+        name, email, phone, favorite
     });
-    res.status(201).json(newContact);
+    return newContact;
 }
 
-async function removeContact(req, res, next) {
-    const { id } = req.params;
-    const contact = await Contact.findById(id);
-    await Contact.findByIdAndRemove(id);
-    return res.status(200).json(contact);
+async function removeContact(contactId) {
+    const contact = await Contact.findByIdAndRemove(contactId);
+    return contact;
 }
 
-async function updateContact(req, res, next) {
-    const { name, email, phone, favorite } = req.body;
-    const contact = await Contact.findOneAndUpdate(name, email, phone, favorite);
-    return res.status(200).json(contact);
+async function updateContact(contactId,name, email, phone, favorite) {
+    const contact = await Contact.findByIdAndUpdate(contactId, { name, email, phone, favorite });
+    return contact;
 }
 
 // const fs = require("fs/promises");
