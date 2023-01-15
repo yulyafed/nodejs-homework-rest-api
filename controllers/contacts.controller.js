@@ -1,7 +1,7 @@
 const { Contact } = require("../models/contacts");
 
 async function listContacts(req, res) {
-    const contacts = await Contact.find({});
+    const contacts = await Contact.find();
     res.json(contacts);
 }
 
@@ -27,9 +27,8 @@ async function removeContact(req, res, next) {
 }
 
 async function updateContact(req, res, next) {
-    const { id } = req.params;
-    const contact = await Contact.findById(id);
-    await Contact.findByIdAndUpdate(id);
+    const { name, email, phone, favorite } = req.body;
+    const contact = await Contact.findOneAndUpdate(name, email, phone, favorite);
     return res.status(200).json(contact);
 }
 
