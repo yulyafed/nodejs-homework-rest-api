@@ -12,7 +12,7 @@ async function getContactById(contactId) {
 
 async function addContact(name, email, phone, favorite) {
        const newContact = await Contact.create({
-        name, email, phone, favorite
+           name, email, phone, favorite 
     });
     return newContact;
 }

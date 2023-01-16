@@ -3,7 +3,7 @@ GET http://localhost:3001/api/contacts
 ###
 
 # Get Contact by id
-GET http://localhost:3001/api/contacts/63c3f82167b801e94e7aca0e
+GET http://localhost:3001/api/contacts/63c5511c40c9da2231ec1304
 ###
 
 # Post Contact 
@@ -14,22 +14,21 @@ content-type: application/json
 "name": "Anna",
 "email": "1@gmail.com",
 "phone": "(098) 689-4566",
-"favorite": false
+"favorite": true
 }
 ###
 
 # Delete Contact 
-DELETE http://localhost:3001/api/contacts/63c47a97ed73728783a99fc7
+DELETE http://localhost:3001/api/contacts/63c5511c40c9da2231ec1304
 ###
 
 # Put Contact
-PUT http://localhost:3001/api/contacts/63c3f82167b801e94e7aca17
+PUT http://localhost:3001/api/contacts/63c5517640c9da2231ec1308
 content-type: application/json
 
 {
 "name": "Ivanf",
 "email": "2@gmail.com",
-"phone": "(098) 777-4577",
-"favorite": false
+"phone": "(098) 777-4588"
 }
 ###
