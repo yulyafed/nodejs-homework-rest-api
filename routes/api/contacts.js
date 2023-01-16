@@ -8,6 +8,7 @@ const {
   addContact,
   removeContact,
   updateContact,
+  updateStatusContact,
 } = require("../../controllers/contacts.controller");
 
 router.get("/", async (req, res, next) => {
@@ -78,8 +79,11 @@ router.put("/:contactId", updateValidation(contactsUpdateSchema), async (req, re
 router.patch("/:contactId/favorite", updateValidation(contactsUpdateSchema), async (req, res, next) => {
   try {
     const { contactId } = req.params;
-    const { name, email, phone, favorite } = req.body;
-    const contact = await updateContact(contactId, name, email, phone, favorite);
+    const { favorite } = req.body;
+    if (favorite === undefined) { 
+      return res.status(400).json({ message: "missing field favorite" });
+    }
+    const contact = await updateStatusContact(contactId, favorite);
     if (!contact) {
       return res.status(404).json({ message: "Not found" });
     }

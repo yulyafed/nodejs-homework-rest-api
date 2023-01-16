@@ -32,3 +32,15 @@ content-type: application/json
 "phone": "(098) 777-4588"
 }
 ###
+
+# Patch Contact
+PATCH  http://localhost:3001/api/contacts/63c3f82167b801e94e7aca0e/favorite
+content-type: application/json
+
+{
+"name": "Ivany",
+"email": "288@gmail.com",
+"phone": "(098) 778-4588",
+"favorite": false
+}
+###

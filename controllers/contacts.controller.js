@@ -27,6 +27,20 @@ async function updateContact(contactId,name, email, phone, favorite) {
     return contact;
 }
 
+async function updateStatusContact(contactId, favorite) {
+    const contact = await Contact.findByIdAndUpdate(contactId, { favorite });
+    return contact;
+}
+
+module.exports = {
+    listContacts,
+    getContactById,
+    removeContact,
+    addContact,
+    updateContact,
+    updateStatusContact,
+}
+
 // const fs = require("fs/promises");
 // const path = require("path");
 // const shortid = require('shortid');
@@ -75,10 +89,3 @@ async function updateContact(contactId,name, email, phone, favorite) {
 //   return contacts[index];
 // }
 
-module.exports = {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  updateContact,
-}
