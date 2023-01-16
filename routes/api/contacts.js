@@ -35,7 +35,7 @@ router.get("/:contactId", async (req, res, next) => {
 router.post("/", validation(contactsSchema), async (req, res, next) => {
   try {
     const { name, email, phone, favorite } = req.body;
-    const contact = await addContact(name, email, phone, favorite);
+      const contact = await addContact(name, email, phone, favorite);
       if (!contact) {
         return res.status(400).json({ message: "missing required name field"});
         }

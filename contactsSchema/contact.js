@@ -4,7 +4,7 @@ const contactsSchema = Joi.object({
     name: Joi.string().alphanum().min(2).max(20).required(),
     email: Joi.string().min(2).max(20).required(),
     phone: Joi.string().min(11).max(15).required(),
-    favorite: Joi.boolean().required(),
+    favorite: Joi.boolean(),
 });
 
 const contactsUpdateSchema = Joi.object({
