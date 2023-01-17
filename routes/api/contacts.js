@@ -8,7 +8,8 @@ const {
   addContact,
   removeContact,
   updateContact,
-} = require("../../models/contacts");
+  updateStatusContact,
+} = require("../../controllers/contacts.controller");
 
 router.get("/", async (req, res, next) => {
   try {
@@ -34,7 +35,8 @@ router.get("/:contactId", async (req, res, next) => {
 
 router.post("/", validation(contactsSchema), async (req, res, next) => {
   try {
-    const contact = await addContact(req.body);
+    const { name, email, phone, favorite } = req.body;
+      const contact = await addContact(name, email, phone, favorite);
       if (!contact) {
         return res.status(400).json({ message: "missing required name field"});
         }
@@ -60,11 +62,29 @@ router.delete("/:contactId", async (req, res, next) => {
 router.put("/:contactId", updateValidation(contactsUpdateSchema), async (req, res, next) => {
   try {
     const { contactId } = req.params;
-    const contact = await updateContact(contactId, req.body);
+    let { name, email, phone, favorite } = req.body; 
+    if (favorite === undefined) {
+      favorite = false;
+    }
+    const contact = await updateContact(contactId, name, email, phone, favorite );
     if (!contact) {
       return res.status(404).json({ message: "Not found"});
     }
     res.status(200).json( contact );
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.patch("/:contactId/favorite", updateValidation(contactsUpdateSchema), async (req, res, next) => {
+  try {
+    const { contactId } = req.params;
+    const { favorite } = req.body;
+    const contact = await updateStatusContact(contactId, favorite);
+    if (!contact) {
+      return res.status(404).json({ message: "Not found" });
+    }
+    res.status(200).json(contact);
   } catch (error) {
     next(error);
   }
