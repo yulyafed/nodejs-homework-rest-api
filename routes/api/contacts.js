@@ -80,9 +80,6 @@ router.patch("/:contactId/favorite", updateValidation(contactsUpdateSchema), asy
   try {
     const { contactId } = req.params;
     const { favorite } = req.body;
-    if (favorite === undefined) { 
-      return res.status(400).json({ message: "missing field favorite" });
-    }
     const contact = await updateStatusContact(contactId, favorite);
     if (!contact) {
       return res.status(404).json({ message: "Not found" });

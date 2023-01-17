@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3001;
 
 const { HOST_URI } = process.env;
 
-async function main() {
+(async function main() {
   try {
     await mongoose.connect(HOST_URI);
     console.log("Database connection successful");
@@ -18,10 +18,9 @@ async function main() {
       console.log(`Server running. Use our API on port: ${PORT}`)
     })
 
-       } catch (error) {
+  } catch (error) {
     console.error("Error connecting to Database", error.message);
     process.exit(1);
   }
-}
+}());
 
-main();
