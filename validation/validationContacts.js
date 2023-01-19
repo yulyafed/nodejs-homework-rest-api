@@ -1,4 +1,4 @@
-const { contactsSchema, contactsUpdateSchema } = require("../contactsSchema");
+const { contactsSchema, contactsUpdateSchema, authSchema } = require("../contactsSchema");
 
 const validation = (contactsSchema) => {
     return (req, res, next) => {
@@ -24,4 +24,16 @@ const updateValidation = (contactsUpdateSchema) => {
     };
 };
 
-module.exports =  validation, updateValidation  ;
+const authValidation = (authSchema) => {
+    return (req, res, next) => {
+        const { error } = authSchema.validate(req.body);
+        if (error) {
+            error.status = 400;
+            next(error);
+            return;
+        }
+        next();
+    };
+};
+
+module.exports =  validation, updateValidation, authValidation  ;

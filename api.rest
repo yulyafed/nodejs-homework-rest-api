@@ -44,3 +44,13 @@ content-type: application/json
 "favorite": true
 }
 ###
+
+# POST register
+POST  http://localhost:3001/api/auth/register
+content-type: application/json
+
+{
+"email": "examplegu@gmail.com",
+"password": "gjgjhgjh"
+}
+###

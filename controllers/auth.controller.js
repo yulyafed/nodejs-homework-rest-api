@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
 
 async function register(req, res, next) {
+    
     const { email, password } = req.body;
 
     const salt = await bcrypt.genSalt();
@@ -18,16 +19,14 @@ async function register(req, res, next) {
         });
 
         res.status(201).json({
-            data: {
                 user: {
                     email,
-                    id: savedUser._id,
+                    subscription: savedUser.subscription,
                 },
-            },
-        });
+            });
     } catch (error) {
         if (error.message.includes("E11000 duplicate key error")) {
-            throw new HttpError(409, "User with this email already exists");
+            throw new HttpError(409, "Email in use");
         }
 
         throw error;
