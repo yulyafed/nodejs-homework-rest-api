@@ -1,7 +1,9 @@
 const { Contact } = require("../models/contacts");
 
 async function listContacts() {
-    const contacts = await Contact.find();
+    const { limit = 5, page = 1 } = req.query;
+    const skip = (page - 1) * limit;
+    const contacts = await Contact.find().skip(skip).limit(limit);
     return contacts;
 }
 

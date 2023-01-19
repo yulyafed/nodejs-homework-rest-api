@@ -23,6 +23,5 @@ const schema = mongoose.Schema(
 const User = mongoose.model("user", schema);
 
 module.exports = {
-    Contact,
     User,
 };
