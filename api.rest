@@ -50,7 +50,27 @@ POST  http://localhost:3001/api/auth/register
 content-type: application/json
 
 {
-"email": "examplegugmail.com",
-"password": "gkljlkjljlkjljlk"
+"email": "exampleyulyafu@gmail.com",
+"password": "12345678"
 }
+###
+
+# POST login
+POST    http://localhost:3001/api/auth/login
+content-type: application/json
+
+{
+"email": "exampleyulyafu@gmail.com",
+"password": "12345678"
+}
+###
+
+# Valid token
+GET  http://localhost:3001/api/users/contacts
+Authorization: Bearer oeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYzlkMjFjNTY1MWVlYzhmNWVjMTk2MCIsImlhdCI6MTY3NDE3MDkxMiwiZXhwIjoxNjc0MTg4OTEyfQ.R7AOiUKK3GYT6APMNJeDBarfCyNT6tkMF9BvvTo_M0k
+###
+
+# POST logout
+POST   http://localhost:3001/api/auth/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYzlkMjFjNTY1MWVlYzhmNWVjMTk2MCIsImlhdCI6MTY3NDE3MDkxMiwiZXhwIjoxNjc0MTg4OTEyfQ.R7AOiUKK3GYT6APMNJeDBarfCyNT6tkMF9BvvTo_M0k
 ###

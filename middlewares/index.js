@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
+const { HttpError} = require('../helpers')
 const { User } = require("./../models/users");
 
-const { JWT_SECRET } = process.env;
+const secret = `${process.env.JWT_SECRET}`;
 
 async function auth(req, res, next) {
     const authHeader = req.headers.authorization || "";
@@ -12,16 +13,20 @@ async function auth(req, res, next) {
     }
 
     if (!token) {
-        throw HttpError(401, "no token provided");
+        throw HttpError(401, "Not authorized");
     }
 
     try {
-        const { id } = jwt.verify(token, JWT_SECRET);
+        const { id } = jwt.verify(token, secret);
         const user = await User.findById(id);
+        
+        if (!user) { 
+            throw HttpError(401, "Not authorized"); 
+        }   
         req.user = user;
     } catch (error) {
         if (error.name === "TokenExpiredError" || error.name === "JsonWebTokenError") {
-            throw HttpError(401, "jwt token is not valid");
+            throw HttpError(401, "Not authorized");
         }
         throw error;
     }

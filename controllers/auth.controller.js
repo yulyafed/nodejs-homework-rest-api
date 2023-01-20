@@ -3,7 +3,7 @@ const { User } = require("../models/users");
 const { HttpError } = require("../helpers");
 const jwt = require("jsonwebtoken");
 
-const { JWT_SECRET } = process.env;
+const secret = `${ process.env.JWT_SECRET }`;
 
 async function register(req, res, next) {
     
@@ -41,26 +41,39 @@ async function login(req, res, next) {
     });
 
     if (!storedUser) {
-        throw new HttpError(401, "email is not valid");
+        throw new HttpError(401, "Email is wrong");
     }
 
     const isPasswordValid = await bcrypt.compare(password, storedUser.password);
 
     if (!isPasswordValid) {
-        throw new HttpError(401, "password is not valid");
+        throw new HttpError(401, "password is wrong");
     }
 
     const payload = { id: storedUser._id };
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign(payload, secret, { expiresIn: "5h" });
 
     return res.json({
-        data: {
-            token,
+        token,
+        user: {
+            email,
+            subscription: storedUser.subscription,
         },
     });
+}
+
+async function logout(req, res, next) {
+    const payload = { id: storedByIdUser.userId };
+    const deletedToken = await User.remove({ token })
+    return res.status(204).json({
+        user: {
+            token: deletedToken.token,
+        },
+    })
 }
 
 module.exports = {
     register,
     login,
+    logout,
 };
