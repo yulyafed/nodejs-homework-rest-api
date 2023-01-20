@@ -3,7 +3,7 @@ const express = require("express");
 const { tryCatchWrapper } = require("../../helpers/index.js");
 const { register, login, logout } = require("../../controllers/auth.controller");
 const { authValidation}   = require("../../validation");
-const { authSchema } = require("../../contactsSchema");
+const { authSchema } = require("../../contactsSchema/auth");
 const { auth } = require("../../middlewares");
 
 const authRouter = express.Router();
