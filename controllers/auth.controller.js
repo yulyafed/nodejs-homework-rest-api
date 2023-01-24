@@ -63,13 +63,22 @@ async function login(req, res, next) {
 }
 
 async function logout(userId) {
-    await User.findOneAndUpdate({ _id: userId }, { token: null });
-    res.status(204).end()
+    const user = await User.findOneAndUpdate({ _id: userId }, { token: null });
+    if (!user) { 
+        throw HttpError(401, "Not authorized");
+    }
+    return res.status(204)
 };
 
 async function currentUser (userId) {
-    const { email, subscription } = await User.findOne({ _id: userId });
-    return { email, subscription };
+    const user = await User.findOne({ _id: userId });
+    if (!user) {
+        throw HttpError(401, "Not authorized");
+    }
+    return res.json({       
+        email,
+        subscription: user.subscription,
+    });
    };
 
 module.exports = {
