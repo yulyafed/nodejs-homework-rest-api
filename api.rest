@@ -11,15 +11,15 @@ POST http://localhost:3001/api/contacts
 content-type: application/json
 
 {
-"name": "Annah",
-"email": "1@gmail.com",
-"phone": "(098) 689-4566",
+"name": "Annahojv",
+"email": "17@gmail.com",
+"phone": "(098) 611-4566",
 "favorite": true
 }
 ###
 
 # Delete Contact 
-DELETE http://localhost:3001/api/contacts/63cfeb779a107279e07ca5ea
+DELETE http://localhost:3001/api/contacts/63cffa381907f6f4b08f31fe
 ###
 
 # Put Contact
@@ -27,7 +27,7 @@ PUT http://localhost:3001/api/contacts/63c3f82167b801e94e7aca11
 content-type: application/json
 
 {
-"name": "Ivanfi",
+"name": "Ivanfig",
 "email": "2@gmail.com",
 "phone": "(098) 777-4588"
 }
@@ -38,7 +38,7 @@ PATCH  http://localhost:3001/api/contacts/63c3f82167b801e94e7aca11/favorite
 content-type: application/json
 
 {
-"name": "Ivanyt",
+"name": "Ivanyfig",
 "email": "288@gmail.com",
 "phone": "(098) 778-4588",
 "favorite": true
@@ -50,7 +50,7 @@ POST  http://localhost:3001/api/auth/register
 content-type: application/json
 
 {
-"email": "exampleyulyafut@gmail.com",
+"email": "exampleyule@gmail.com",
 "password": "123456789"
 }
 ###
@@ -60,14 +60,14 @@ POST    http://localhost:3001/api/auth/login
 content-type: application/json
 
 {
-"email": "exampleyulyafut@gmail.com",
+"email": "exampleyule@gmail.com",
 "password": "123456789"
 }
 ###
 
 # Valid token
 GET  http://localhost:3001/api/users/contacts
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzY2ZlZGQxY2E3NjY3YTE3OWUwNzRhMiIsImlhdCI6MTY3NDU3MTI0NywiZXhwIjoxNjc0NTg5MjQ3fQ.-ZlwLdtXFeFJamSiAEuMftuEXtoIglEUW7B-UTzYoaU
+Authorization: "Bearer {eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzY2ZmYTZlMTkwN2Y2ZjRiMDhmMzIwNSIsImlhdCI6MTY3NDU3NDQ2NiwiZXhwIjoxNjc0NTkyNDY2fQ.yJCuU0k0TjVW45gy9cY3hZQdZu3AoANlI7x5gQrqw2g}"
 ###
 
 # POST logout
