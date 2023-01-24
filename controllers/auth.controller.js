@@ -62,18 +62,19 @@ async function login(req, res, next) {
     });
 }
 
-async function logout(req, res, next) {
-    const payload = { id: storedByIdUser.userId };
-    const deletedToken = await User.remove({ token })
-    return res.status(204).json({
-        user: {
-            token: deletedToken.token,
-        },
-    })
-}
+async function logout(userId) {
+    await User.findOneAndUpdate({ _id: userId }, { token: null });
+    res.status(204).end()
+};
+
+async function currentUser (userId) {
+    const { email, subscription } = await User.findOne({ _id: userId });
+    return { email, subscription };
+   };
 
 module.exports = {
     register,
     login,
     logout,
+    currentUser,
 };
