@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const { validation, updateValidation } = require("../../validation");
 const { contactSchema, contactsUpdateSchema } = require("../../contactsSchema");
+const { auth } = require("../../middlewares");
+const { tryCatchWrapper } = require("../../helpers/index.js");
 const {
   listContacts,
   getContactById,
@@ -11,16 +13,16 @@ const {
   updateStatusContact,
 } = require("../../controllers/contacts.controller");
 
-router.get("/", async (req, res, next) => {
+router.get("/", tryCatchWrapper(auth), async (req, res, next) => {
   try {
-    const contacts = await listContacts();
+    const contacts = await listContacts(req.user._id);
     res.status(200).json({ contacts });
   } catch (error) {
     next(error);
   }
   });
 
-router.get("/:contactId", async (req, res, next) => {
+router.get("/:contactId", tryCatchWrapper(auth), async (req, res, next) => {
   try {
     const contact = await getContactById(req.params.contactId);
 
@@ -33,10 +35,10 @@ router.get("/:contactId", async (req, res, next) => {
   }
   });
 
-router.post("/", validation(contactSchema), async (req, res, next) => {
+router.post("/", tryCatchWrapper(auth), validation(contactSchema), async (req, res, next) => {
   try {
     const { name, email, phone, favorite } = req.body;
-      const contact = await addContact(name, email, phone, favorite);
+      const contact = await addContact(req.user._id, name, email, phone, favorite);
       if (!contact) {
         return res.status(400).json({ message: "missing required name field"});
         }
@@ -46,7 +48,7 @@ router.post("/", validation(contactSchema), async (req, res, next) => {
   }
 });
 
-router.delete("/:contactId", async (req, res, next) => {
+router.delete("/:contactId", tryCatchWrapper(auth), async (req, res, next) => {
   try {
     const { contactId } = req.params;
     const contact = await removeContact(contactId);
@@ -59,7 +61,7 @@ router.delete("/:contactId", async (req, res, next) => {
   }
 });
 
-router.put("/:contactId", updateValidation(contactsUpdateSchema), async (req, res, next) => {
+router.put("/:contactId", tryCatchWrapper(auth), updateValidation(contactsUpdateSchema), async (req, res, next) => {
   try {
     const { contactId } = req.params;
     let { name, email, phone, favorite } = req.body; 
@@ -76,7 +78,7 @@ router.put("/:contactId", updateValidation(contactsUpdateSchema), async (req, re
   }
 });
 
-router.patch("/:contactId/favorite", updateValidation(contactsUpdateSchema), async (req, res, next) => {
+router.patch("/:contactId/favorite", tryCatchWrapper(auth), updateValidation(contactsUpdateSchema), async (req, res, next) => {
   try {
     const { contactId } = req.params;
     const { favorite } = req.body;

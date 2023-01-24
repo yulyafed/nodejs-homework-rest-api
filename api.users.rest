@@ -1,0 +1,34 @@
+# POST register
+POST  http://localhost:3001/api/users/register
+content-type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password": "123456789"
+}
+###
+
+# POST login
+# @name login
+POST http://localhost:3001/api/users/login
+content-type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password": "123456789"
+}
+###
+
+@token = Bearer {{login.response.body.token}}
+
+# POST logout
+POST http://localhost:3001/api/users/logout
+Authorization: {{token}}
+###
+
+# Get currentUser
+GET http://localhost:3001/api/users/current
+Authorization: {{token}}
+###
+
+

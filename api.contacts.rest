@@ -1,0 +1,66 @@
+# POST login
+# @name login
+POST http://localhost:3001/api/users/login
+content-type: application/json
+
+{
+  "email": "test@gmail.com",
+  "password": "123456789"
+}
+###
+@token = Bearer {{login.response.body.token}}
+
+#### Contacts
+# @name getcontacts
+GET http://localhost:3001/api/contacts
+Authorization: {{token}}
+###
+
+# Post Contact 
+POST http://localhost:3001/api/contacts
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Annahojv",
+  "email": "17@gmail.com",
+  "phone": "(098) 611-4566",
+  "favorite": true
+}
+###
+
+@contactid = {{getcontacts.response.body.contacts[0]._id}}
+# Get Contact by id
+GET http://localhost:3001/api/contacts/{{contactid}}
+Authorization: {{token}}
+###
+
+# Delete Contact 
+DELETE http://localhost:3001/api/contacts/{{contactid}}
+Authorization: {{token}}
+###
+
+# Put Contact
+PUT http://localhost:3001/api/contacts/{{contactid}}
+content-type: application/json
+Authorization: {{token}}
+
+{
+"name": "Ivanfig",
+"email": "2@gmail.com",
+"phone": "(098) 777-4588"
+}
+###
+
+# Patch Contact
+PATCH  http://localhost:3001/api/contacts/{{contactid}}/favorite
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Ivanyfig",
+  "email": "288@gmail.com",
+  "phone": "(098) 778-4588",
+  "favorite": true
+}
+###

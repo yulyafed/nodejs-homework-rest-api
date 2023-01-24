@@ -16,8 +16,10 @@ const schema = mongoose.Schema(
             enum: ["starter", "pro", "business"],
             default: "starter"
         },
-        token: String,
-       
+        token: {
+          type: String,
+          default: null
+        }
     }
 );
 
