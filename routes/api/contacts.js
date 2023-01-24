@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { validation, updateValidation } = require("../../validation");
-const { contactsSchema, contactsUpdateSchema } = require("../../contactsSchema");
+const { contactSchema, contactsUpdateSchema } = require("../../contactsSchema");
 const {
   listContacts,
   getContactById,
@@ -33,7 +33,7 @@ router.get("/:contactId", async (req, res, next) => {
   }
   });
 
-router.post("/", validation(contactsSchema), async (req, res, next) => {
+router.post("/", validation(contactSchema), async (req, res, next) => {
   try {
     const { name, email, phone, favorite } = req.body;
       const contact = await addContact(name, email, phone, favorite);

@@ -1,34 +1,34 @@
 const { Contact } = require("../models/contacts");
 
-async function listContacts(owner) {
-    const contacts = await Contact.find(owner);
+async function listContacts() {
+    const contacts = await Contact.find();
     return contacts;
 }
 
-async function getContactById(contactId, owner) {
-    const contact = await Contact.findById(contactId, owner);
+async function getContactById(contactId) {
+    const contact = await Contact.findById(contactId);
     return contact;
 }
 
-async function addContact(name, email, phone, favorite,owner) {
+async function addContact(name, email, phone, favorite) {
        const newContact = await Contact.create({
-           name, email, phone, favorite ,owner
+           name, email, phone, favorite, 
     });
     return newContact;
 }
 
-async function removeContact(contactId, owner) {
-    const contact = await Contact.findByIdAndRemove(contactId, owner);
+async function removeContact(contactId) {
+    const contact = await Contact.findByIdAndRemove(contactId);
     return contact;
 }
 
-async function updateContact(contactId, name, email, phone, favorite, owner) {
-    const contact = await Contact.findByIdAndUpdate(contactId, owner, { name, email, phone, favorite });
+async function updateContact(contactId, name, email, phone, favorite) {
+    const contact = await Contact.findByIdAndUpdate(contactId, { name, email, phone, favorite });
     return contact;
 }
 
-async function updateStatusContact(contactId, favorite, owner) {
-    const contact = await Contact.findByIdAndUpdate(contactId, owner, { favorite });
+async function updateStatusContact(contactId, favorite) {
+    const contact = await Contact.findByIdAndUpdate(contactId, { favorite });
     return contact;
 }
 

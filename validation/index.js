@@ -1,5 +1,5 @@
 const validation = require("./validationContacts");
 const updateValidation = require("./validationContacts");
-const authValidation = require("./validationContacts");
+const authValidat = require("./authValidation");
 
-module.exports = { validation, updateValidation, authValidation};
+module.exports = { validation, updateValidation, authValidat};
