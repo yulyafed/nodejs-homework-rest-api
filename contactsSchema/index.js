@@ -1,7 +1,10 @@
-const contactsSchema = require("./contact");
+const contactSchema = require("./contact");
 const contactsUpdateSchema = require("./contact");
+const authSchema = require("./auth");
+
 
 module.exports = {
-    contactsSchema,
+    contactSchema,
     contactsUpdateSchema,
+    authSchema,
 };

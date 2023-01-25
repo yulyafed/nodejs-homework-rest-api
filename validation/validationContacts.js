@@ -1,4 +1,4 @@
-const { contactsSchema, contactsUpdateSchema } = require("../contactsSchema");
+const { contactsSchema, contactsUpdateSchema} = require("../contactsSchema");
 
 const validation = (contactsSchema) => {
     return (req, res, next) => {
@@ -24,4 +24,4 @@ const updateValidation = (contactsUpdateSchema) => {
     };
 };
 
-module.exports =  validation, updateValidation  ;
+module.exports =  validation, updateValidation ;
