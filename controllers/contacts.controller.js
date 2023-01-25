@@ -32,6 +32,32 @@ async function updateStatusContact(contactId, favorite) {
     return contact;
 }
 
+async function uploadImage(req, res, next) {
+    
+    console.log("req.file", req.file);
+    const { filename } = req.file;
+    const tmpPath = path.resolve(__dirname, "../tmp", filename);
+    const publicPath = path.resolve(__dirname, "../public", filename);
+    try {
+        await fs.rename(tmpPath, publicPath);
+    } catch (error) {
+        await fs.unlink(tmpPath);
+        throw error;
+    }
+
+    const contactId = req.params.id;
+
+    const contact = await Movie.findById(contactId);
+    contact.image = `/public/${filename}`;
+    await contact.save();
+
+    return res.json({
+        data: {
+            image: contact.image,
+        },
+    });
+}
+
 module.exports = {
     listContacts,
     getContactById,
@@ -39,5 +65,6 @@ module.exports = {
     addContact,
     updateContact,
     updateStatusContact,
+    uploadImage,
 }
 

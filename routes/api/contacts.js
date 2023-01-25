@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { validation, updateValidation } = require("../../validation");
 const { contactSchema, contactsUpdateSchema } = require("../../contactsSchema");
-const { auth } = require("../../middlewares");
+const { auth, upload } = require("../../middlewares");
 const { tryCatchWrapper } = require("../../helpers/index.js");
 const {
   listContacts,
@@ -11,6 +11,7 @@ const {
   removeContact,
   updateContact,
   updateStatusContact,
+  uploadImage
 } = require("../../controllers/contacts.controller");
 
 router.get("/", tryCatchWrapper(auth), async (req, res, next) => {
@@ -91,5 +92,7 @@ router.patch("/:contactId/favorite", tryCatchWrapper(auth), updateValidation(con
     next(error);
   }
 });
+
+router.patch("/:id/image", upload.single("image"), tryCatchWrapper(uploadImage));
 
 module.exports = router;
