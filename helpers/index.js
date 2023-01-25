@@ -14,6 +14,14 @@ function HttpError(status, message) {
     return err;
 }
 
+// class HttpError {
+//     constructor(message,status) {
+//         this.message = message;
+//         this.name = "HttpError";
+//         this.status = status;
+//     }
+// }
+
 module.exports = {
     tryCatchWrapper,
     HttpError,

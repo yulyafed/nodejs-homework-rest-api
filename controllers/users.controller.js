@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const { User } = require("../models/users");
 
-const secret = `${ process.env.JWT_SECRET }`;
+const { JWT_SECRET } = process.env;
 
 async function register(req, res, next) {
     
@@ -51,7 +51,7 @@ async function login(req, res, next) {
     }
 
     const payload = { id: storedUser._id };
-    const token = jwt.sign(payload, secret, { expiresIn: "5h" });
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "5h" });
 
     await User.findOneAndUpdate(storedUser._id, {token});
     return res.json({
