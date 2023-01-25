@@ -14,11 +14,17 @@ function HttpError(status, message) {
     return err;
 }
 
-// class HttpError {
-//     constructor(message,status) {
+// class Error {
+//     constructor(message) {
 //         this.message = message;
+//         this.name = "Error";         
+//   }
+// }
+
+// class HttpError extends Error {
+//     constructor(message) {
+//         super(message);
 //         this.name = "HttpError";
-//         this.status = status;
 //     }
 // }
 
