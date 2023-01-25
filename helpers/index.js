@@ -8,25 +8,21 @@ function tryCatchWrapper(enpointFn) {
     };
 }
 
-function HttpError(status, message) {
-    const err = new Error(message);
-    err.status = status;
-    return err;
+class Error {
+    constructor(status, message) {
+        this.status = status;
+        this.message = message;
+        this.name = "Error";         
+  }
 }
 
-// class Error {
-//     constructor(message) {
-//         this.message = message;
-//         this.name = "Error";         
-//   }
-// }
-
-// class HttpError extends Error {
-//     constructor(message) {
-//         super(message);
-//         this.name = "HttpError";
-//     }
-// }
+class HttpError extends Error {
+    constructor(status,message) {
+        super(status,message);
+        this.name = "HttpError";
+        this.status = status;
+    }
+}
 
 module.exports = {
     tryCatchWrapper,
