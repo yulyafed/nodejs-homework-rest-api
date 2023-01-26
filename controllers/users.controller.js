@@ -80,55 +80,55 @@ const currentUser = async (req, res) => {
     return res.status(200).json(req.user);
 };
 
-async function uploadAvatar(req, res, next) {
+// async function uploadAvatar(req, res, next) {
 
-    const { filename } = req.file;
-    const tmpPath = path.resolve(__dirname, "../tmp", filename);
-    const publicPath = path.resolve(__dirname, "../public", filename);
-    try {
-        await fs.rename(tmpPath, publicPath);
-    } catch (error) {
-        await fs.unlink(tmpPath);
-        throw error;
-    }
-
-    const { _id: userId } = req.user;
-
-    const user = await User.findById(userId);
-    user.avatarURL = `/public/avatars/${filename}`;
-    await user.save();
-
-    return res.json({
-        data: {
-            user: user.avatarURL,
-        },
-    });
-}
-
-// const avatarsDir = path.join(__dirname, "../../", "public", "avatars");
-
-// const updateAvatar = async (req, res) => {
-//     const { path: tempUload, originalname } = req.file;
-//     const { _id: id } = req.user;
-//     const imageName = `${id}_${originalname}`;
+//     const { filename } = req.file;
+//     const tmpPath = path.resolve(__dirname, "../tmp", filename);
+//     const publicPath = path.resolve(__dirname, "../public", filename);
 //     try {
-//         const resultUpload = path.join(avatarsDir, imageName);
-//         await Jimp.read(tempUload)
-//             .then((avatar) => {
-//                 return avatar.resize(250, 250).quality(60).write(resultUpload);
-//             })
-//             .catch((error) => {
-//                 throw error;
-//             });
-//         // await fs.rename(tempUload, resultUpload);
-//         const avatarURL = path.join("public", "avatars", imageName);
-//         await User.findByIdAndUpdate(req.user._id, { avatarURL });
-//         res.json({ avatarURL });
+//         await fs.rename(tmpPath, publicPath);
 //     } catch (error) {
-//         await fs.unlink(tempUload);
+//         await fs.unlink(tmpPath);
 //         throw error;
 //     }
-// };
+
+//     const { _id: userId } = req.user;
+
+//     const user = await User.findById(userId);
+//     user.avatarURL = `/public/avatars/${filename}`;
+//     await user.save();
+
+//     return res.json({
+//         data: {
+//             user: user.avatarURL,
+//         },
+//     });
+// }
+
+const avatarsDir = path.join(__dirname, "../../", "public", "avatars");
+
+const uploadAvatar = async (req, res) => {
+    const { path: tmpUpload, originalname } = req.file;
+    const { _id: id } = req.user;
+    const imageName = `${id}_${originalname}`;
+    try {
+        const resultUpload = path.join(avatarsDir, imageName);
+        await Jimp.read(tmpUpload)
+            .then((avatar) => {
+                return avatar.resize(250, 250).write(resultUpload);
+            })
+            .catch((error) => {
+                throw error;
+            });
+        
+        const avatarURL = path.join("public", "avatars", imageName);
+        await User.findByIdAndUpdate(req.user._id, { avatarURL });
+        res.json({ avatarURL });
+    } catch (error) {
+        await fs.unlink(tmpUpload);
+        throw error;
+    }
+};
 
 module.exports = {
     register,

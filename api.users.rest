@@ -3,7 +3,7 @@ POST  http://localhost:3001/api/users/register
 content-type: application/json
 
 {
-  "email": "test5@gmail.com",
+  "email": "test6@gmail.com",
   "password": "123456789"
 }
 ###
@@ -14,7 +14,7 @@ POST http://localhost:3001/api/users/login
 content-type: application/json
 
 {
-  "email": "test@gmail.com",
+  "email": "test6@gmail.com",
   "password": "123456789"
 }
 ###
@@ -31,4 +31,14 @@ GET http://localhost:3001/api/users/current
 Authorization: {{token}}
 ###
 
+# PATCH UploadAvatar
+PATCH http://localhost:3001/api/users/avatars
+Content-Type: multipart/form-data
+Authorization: {{token}}
+
+{
+  "avatarURL": "mountains-g4a6e528e0_640.jpg",
+ 
+}
+###
 
