@@ -2,7 +2,9 @@ const bcrypt = require("bcrypt");
 const { HttpError } = require("../helpers");
 const jwt = require("jsonwebtoken");
 const gravatar = require('gravatar');
-
+const path = require("path");
+const fs = require("fs/promises");
+const Jimp = require("jimp");
 const { User } = require("../models/users");
 
 const { JWT_SECRET } = process.env;
@@ -16,22 +18,13 @@ async function register(req, res, next) {
 
      
     try {
+        const avatarURL = gravatar.url(email);
         const savedUser = await User.create({
             email,
             password: hashedPassword,
+            avatarURL,
         });
-        const avatarURL = gravatar.url(email);
-        // const { path } = req.file;
-        // req.body.avatarURL = gravatar.url(req.body.email);
-        // const { email, subscription } = await registration(req.body);
-        // try {
-        //     await copyAvatar(req.file, req.body);
-        // } catch (error) {
-        //     await fs.unlink(path);
-        //     return next(error);
-        // }
-        
-
+       
         res.status(201).json({
                 user: {
                     email,
@@ -99,10 +92,10 @@ async function uploadAvatar(req, res, next) {
         throw error;
     }
 
-    const userId = req.params.id;
+    const { _id: userId } = req.user;
 
     const user = await User.findById(userId);
-    user.avatarURL = `/public/${filename}`;
+    user.avatarURL = `/public/avatars/${filename}`;
     await user.save();
 
     return res.json({
@@ -111,6 +104,31 @@ async function uploadAvatar(req, res, next) {
         },
     });
 }
+
+// const avatarsDir = path.join(__dirname, "../../", "public", "avatars");
+
+// const updateAvatar = async (req, res) => {
+//     const { path: tempUload, originalname } = req.file;
+//     const { _id: id } = req.user;
+//     const imageName = `${id}_${originalname}`;
+//     try {
+//         const resultUpload = path.join(avatarsDir, imageName);
+//         await Jimp.read(tempUload)
+//             .then((avatar) => {
+//                 return avatar.resize(250, 250).quality(60).write(resultUpload);
+//             })
+//             .catch((error) => {
+//                 throw error;
+//             });
+//         // await fs.rename(tempUload, resultUpload);
+//         const avatarURL = path.join("public", "avatars", imageName);
+//         await User.findByIdAndUpdate(req.user._id, { avatarURL });
+//         res.json({ avatarURL });
+//     } catch (error) {
+//         await fs.unlink(tempUload);
+//         throw error;
+//     }
+// };
 
 module.exports = {
     register,
