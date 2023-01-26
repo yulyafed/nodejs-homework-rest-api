@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const { HttpError } = require("../helpers");
 const jwt = require("jsonwebtoken");
-var gravatar = require('gravatar');
+const gravatar = require('gravatar');
 
 const { User } = require("../models/users");
 
@@ -21,6 +21,15 @@ async function register(req, res, next) {
             password: hashedPassword,
         });
         const avatarURL = gravatar.url(email);
+        // const { path } = req.file;
+        // req.body.avatarURL = gravatar.url(req.body.email);
+        // const { email, subscription } = await registration(req.body);
+        // try {
+        //     await copyAvatar(req.file, req.body);
+        // } catch (error) {
+        //     await fs.unlink(path);
+        //     return next(error);
+        // }
         
 
         res.status(201).json({
@@ -78,9 +87,35 @@ const currentUser = async (req, res) => {
     return res.status(200).json(req.user);
 };
 
+async function uploadAvatar(req, res, next) {
+
+    const { filename } = req.file;
+    const tmpPath = path.resolve(__dirname, "../tmp", filename);
+    const publicPath = path.resolve(__dirname, "../public", filename);
+    try {
+        await fs.rename(tmpPath, publicPath);
+    } catch (error) {
+        await fs.unlink(tmpPath);
+        throw error;
+    }
+
+    const userId = req.params.id;
+
+    const user = await User.findById(userId);
+    user.avatarURL = `/public/${filename}`;
+    await user.save();
+
+    return res.json({
+        data: {
+            user: user.avatarURL,
+        },
+    });
+}
+
 module.exports = {
     register,
     login,
     logout,
-    currentUser
+    currentUser,
+    uploadAvatar,
 };
