@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const { HttpError } = require("../helpers");
 const jwt = require("jsonwebtoken");
+var gravatar = require('gravatar');
 
 const { User } = require("../models/users");
 
@@ -13,16 +14,20 @@ async function register(req, res, next) {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
+     
     try {
         const savedUser = await User.create({
             email,
             password: hashedPassword,
         });
+        const avatarURL = gravatar.url(email);
+        
 
         res.status(201).json({
                 user: {
                     email,
                     subscription: savedUser.subscription,
+                    avatarURL,
                 },
             });
     } catch (error) {

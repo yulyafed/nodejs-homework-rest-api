@@ -33,8 +33,7 @@ async function updateStatusContact(contactId, favorite) {
 }
 
 async function uploadImage(req, res, next) {
-    
-    console.log("req.file", req.file);
+
     const { filename } = req.file;
     const tmpPath = path.resolve(__dirname, "../tmp", filename);
     const publicPath = path.resolve(__dirname, "../public", filename);
@@ -47,7 +46,7 @@ async function uploadImage(req, res, next) {
 
     const contactId = req.params.id;
 
-    const contact = await Movie.findById(contactId);
+    const contact = await Contact.findById(contactId);
     contact.image = `/public/${filename}`;
     await contact.save();
 

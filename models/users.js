@@ -19,7 +19,10 @@ const schema = mongoose.Schema(
         token: {
           type: String,
           default: null
-        }
+        },
+        avatarURL: {
+          type: String,
+        },
     }
 );
 
