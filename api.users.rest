@@ -3,7 +3,7 @@ POST  http://localhost:3001/api/users/register
 content-type: application/json
 
 {
-  "email": "test6@gmail.com",
+  "email": "test8@gmail.com",
   "password": "123456789"
 }
 ###
@@ -14,7 +14,7 @@ POST http://localhost:3001/api/users/login
 content-type: application/json
 
 {
-  "email": "test6@gmail.com",
+  "email": "test8@gmail.com",
   "password": "123456789"
 }
 ###
@@ -32,10 +32,12 @@ Authorization: {{token}}
 ###
 
 # PATCH UploadAvatar
-PATCH http://localhost:3001/api/users/avatars
+PATCH http://localhost:3001/api/users/public/avatars
 Content-Type: multipart/form-data
 Authorization: {{token}}
-
+{
+  "avatarURL": "www.gravatar.com/avatar/129adcf96ff3e4667ea64a693e44a377"
+}
 
 ###
 
