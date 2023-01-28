@@ -37,7 +37,7 @@ async function auth(req, res, next) {
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.resolve( "../tmp"));
+        cb(null, path.resolve( "tmp"));
     },
     filename: function (req, file, cb) {
         cb(null,file.originalname);

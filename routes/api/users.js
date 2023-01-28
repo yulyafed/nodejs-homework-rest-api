@@ -12,7 +12,7 @@ usersRouter.post("/register", authValidat(authSchema), tryCatchWrapper(register)
 usersRouter.post("/login", authValidat(authSchema), tryCatchWrapper(login));
 usersRouter.post("/logout", tryCatchWrapper(auth), tryCatchWrapper(logout));
 usersRouter.get("/current", tryCatchWrapper(auth), tryCatchWrapper(currentUser));
-usersRouter.patch("/avatars", tryCatchWrapper(auth),upload.single("avatar"), tryCatchWrapper(uploadAvatar));
+usersRouter.patch("/avatars", tryCatchWrapper(auth), upload.single("avatar"), tryCatchWrapper(uploadAvatar));
 
 module.exports = {
     usersRouter,

@@ -33,11 +33,14 @@ Authorization: {{token}}
 
 # PATCH UploadAvatar
 PATCH http://localhost:3001/api/users/avatars
-Content-Type: multipart/form-data
+Content-Type: multipart/form-data; boundary=FormBoundary
 Authorization: {{token}}
-{
-  "avatarURL": "www.gravatar.com/avatar/129adcf96ff3e4667ea64a693e44a377"
-}
 
+--FormBoundary
+Content-Disposition: form-data; name="avatar"; filename="mountains-g4a6e528e0_640.jpg"
+Content-Type: image/jpeg
+
+< /home/yulya/Downloads/mountains-g4a6e528e0_640.jpg
+--FormBoundary--
 ###
 

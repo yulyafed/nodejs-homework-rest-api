@@ -11,13 +11,13 @@ const { User } = require("../models/users");
 const { JWT_SECRET } = process.env;
 
 async function register(req, res, next) {
-    
+
     const { email, password } = req.body;
 
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
-     
+
     try {
         const avatarURL = gravatar.url(email);
         const savedUser = await User.create({
@@ -25,14 +25,14 @@ async function register(req, res, next) {
             password: hashedPassword,
             avatarURL,
         });
-       
+
         res.status(201).json({
-                user: {
-                    email,
-                    subscription: savedUser.subscription,
-                    avatarURL,
-                },
-            });
+            user: {
+                email,
+                subscription: savedUser.subscription,
+                avatarURL,
+            },
+        });
     } catch (error) {
         if (error.message.includes("E11000 duplicate key error")) {
             throw new HttpError(409, "Email in use");
@@ -61,7 +61,7 @@ async function login(req, res, next) {
     const payload = { id: storedUser._id };
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "5h" });
 
-    await User.findOneAndUpdate(storedUser._id, {token});
+    await User.findOneAndUpdate(storedUser._id, { token });
     return res.json({
         token,
         user: {
@@ -82,23 +82,24 @@ const currentUser = async (req, res) => {
 };
 
 async function uploadAvatar(req, res, next) {
-
+    
     const { filename } = req.file;
-    const resultUpload = shortid();
-    const avatar = await Jimp.read(filename).resize(250, 250).write(resultUpload)
-    const tmpPath = path.resolve(__dirname, "../tmp", avatar);
-    const publicPath = path.resolve(__dirname, "../../avatars", avatar);
-    try {
-        await fs.rename(tmpPath, publicPath);
-    } catch (error) {
-        await fs.unlink(tmpPath);
-        throw error;
-    }
+    const filepath = path.resolve("tmp", filename)
 
     const { _id: userId } = req.user;
+    const publicFilepath = path.resolve("public/avatars", userId + "_" + filename)
+
+    await Jimp.read(filepath)
+        .then((avatar) => {
+            return avatar.resize(250, 250).write(publicFilepath);
+        })
+        .catch((error) => {
+            throw error;
+        });
+    await fs.unlink(filepath);
 
     const user = await User.findById(userId);
-    user.avatarURL = `/avatars/${avatar}`;
+    user.avatarURL = "/avatars/" + userId + "_" + filename;
     await user.save();
 
     return res.json({
