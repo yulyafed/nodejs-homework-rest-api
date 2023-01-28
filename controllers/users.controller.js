@@ -83,8 +83,9 @@ const currentUser = async (req, res) => {
 async function uploadAvatar(req, res, next) {
 
     const { filename } = req.file;
+    console.log(filename)
     const tmpPath = path.resolve(__dirname, "../tmp", filename);
-    const publicPath = path.resolve(__dirname, "../public", filename);
+    const publicPath = path.resolve(__dirname, "../../avatars", filename);
     try {
         await fs.rename(tmpPath, publicPath);
     } catch (error) {
@@ -95,7 +96,7 @@ async function uploadAvatar(req, res, next) {
     const { _id: userId } = req.user;
 
     const user = await User.findById(userId);
-    user.avatarURL = `/public/avatars/${filename}`;
+    user.avatarURL = `/avatars/${filename}`;
     await user.save();
 
     return res.json({
