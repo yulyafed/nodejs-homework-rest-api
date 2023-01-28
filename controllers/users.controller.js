@@ -5,6 +5,7 @@ const gravatar = require('gravatar');
 const path = require("path");
 const fs = require("fs/promises");
 const Jimp = require("jimp");
+const shortid = require('shortid')
 const { User } = require("../models/users");
 
 const { JWT_SECRET } = process.env;
@@ -83,9 +84,10 @@ const currentUser = async (req, res) => {
 async function uploadAvatar(req, res, next) {
 
     const { filename } = req.file;
-    console.log(filename)
-    const tmpPath = path.resolve(__dirname, "../tmp", filename);
-    const publicPath = path.resolve(__dirname, "../../avatars", filename);
+    const resultUpload = shortid();
+    const avatar = await Jimp.read(filename).resize(250, 250).write(resultUpload)
+    const tmpPath = path.resolve(__dirname, "../tmp", avatar);
+    const publicPath = path.resolve(__dirname, "../../avatars", avatar);
     try {
         await fs.rename(tmpPath, publicPath);
     } catch (error) {
@@ -96,7 +98,7 @@ async function uploadAvatar(req, res, next) {
     const { _id: userId } = req.user;
 
     const user = await User.findById(userId);
-    user.avatarURL = `/avatars/${filename}`;
+    user.avatarURL = `/avatars/${avatar}`;
     await user.save();
 
     return res.json({
@@ -105,31 +107,6 @@ async function uploadAvatar(req, res, next) {
         },
     });
 }
-
-// const avatarsDir = path.join(__dirname, "../../", "public", "avatars");
-
-// const uploadAvatar = async (req, res) => {
-//     const { path: tmpUpload, originalname } = req.file;
-//     const { _id: id } = req.user;
-//     const imageName = `${id}_${originalname}`;
-//     try {
-//         const resultUpload = path.join(avatarsDir, imageName);
-//         await Jimp.read(tmpUpload)
-//             .then((avatar) => {
-//                 return avatar.resize(250, 250).write(resultUpload);
-//             })
-//             .catch((error) => {
-//                 throw error;
-//             });
-        
-//         const avatarURL = path.join("public", "avatars", imageName);
-//         await User.findByIdAndUpdate(req.user._id, { avatarURL });
-//         res.json({ avatarURL });
-//     } catch (error) {
-//         await fs.unlink(tmpUpload);
-//         throw error;
-//     }
-// };
 
 module.exports = {
     register,
