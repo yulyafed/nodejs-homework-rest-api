@@ -109,10 +109,31 @@ async function uploadAvatar(req, res, next) {
     });
 }
 
+async function verifyEmail(req, res, next) {
+    const { token } = req.params;
+    const user = await User.findOne({
+        verifyToken: verificationToken,
+    });
+
+    if (!user) {
+        throw BadRequest("Verify token is not valid!");
+    }
+
+    await User.findByIdAndUpdate(user._id, {
+        verify: true,
+        verificationToken: null,
+    });
+
+    return res.json({
+        message: "Success",
+    });
+}
+
 module.exports = {
     register,
     login,
     logout,
     currentUser,
     uploadAvatar,
+    verifyEmail,
 };

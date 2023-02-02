@@ -24,7 +24,19 @@ class HttpError extends Error {
     }
 }
 
+async function sendMail({ to, html, subject }) {
+    const email = {
+        from: "YulyaFed86@gmail.com",
+        to,
+        subject,
+        html,
+    };
+
+        await sendMail(email);
+}
+
 module.exports = {
     tryCatchWrapper,
     HttpError,
+    sendMail,
 };
