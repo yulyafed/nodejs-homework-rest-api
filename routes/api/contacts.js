@@ -11,7 +11,7 @@ const {
   removeContact,
   updateContact,
   updateStatusContact,
-} = require("../../controllers/contacts.controller");
+  } = require("../../controllers/contacts.controller");
 
 router.get("/", tryCatchWrapper(auth), async (req, res, next) => {
   try {
