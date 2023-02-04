@@ -15,6 +15,10 @@ usersRouter.get("/current", tryCatchWrapper(auth), tryCatchWrapper(currentUser))
 usersRouter.patch("/avatars", tryCatchWrapper(auth), upload.single("avatar"), tryCatchWrapper(uploadAvatar));
 usersRouter.get("/verify/:verificationToken", tryCatchWrapper(verifyEmail));
 
+// router.get("/verify/:verificationToken", asyncWrapper(verificationController));
+
+// router.post("/verify", resendVerificationValidation, asyncWrapper(resendVerificationController));
+
 module.exports = {
     usersRouter,
 };

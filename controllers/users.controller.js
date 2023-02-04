@@ -129,6 +129,29 @@ async function verifyEmail(req, res, next) {
     });
 }
 
+// const verifyUser = async (verificationToken) => {
+//     const user = await User.findOne({ verificationToken, verify: false });
+//     if (!user) {
+//         throw new MainError(404, "User not found");
+//     }
+//     user.verificationToken = "null";
+//     user.verify = true;
+//     await user.save();
+// };
+
+// const resendVerification = async (email) => {
+//     const user = await User.findOne({ email });
+//     if (!user) {
+//         throw new MainError(400, "User not found");
+//     }
+//     if (user.verify) {
+//         throw new MainError(400, "Verification has already been passed");
+//     }
+
+//     sendMail(email, user.verificationToken);
+
+// };
+
 module.exports = {
     register,
     login,
