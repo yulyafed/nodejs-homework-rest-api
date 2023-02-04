@@ -109,48 +109,40 @@ async function uploadAvatar(req, res, next) {
     });
 }
 
-async function verifyEmail(req, res, next) {
-    const { token } = req.params;
-    const user = await User.findOne({
-        verifyToken: verificationToken,
-    });
-
+const verifEmail = async (verificationToken) => {
+    const user = await User.findOne({ verificationToken, verify: false });
     if (!user) {
-        throw BadRequest("Verify token is not valid!");
+        throw new MainError(404, "User not found");
+    }
+    user.verificationToken = "null";
+    user.verify = true;
+    await user.save();
+ 
+};
+
+const verifyEmail = async (req, res) => {
+    const { verificationToken } = req.params;
+    await verifEmail(verificationToken);
+    res.status(200).json({ status: "Verification successful" });
+};
+
+const resendVerification = async (email) => {
+    const user = await User.findOne({ email });
+    if (!user) {
+        throw new MainError(400, "User not found");
+    }
+    if (user.verify) {
+        throw new MainError(400, "Verification has already been passed");
     }
 
-    await User.findByIdAndUpdate(user._id, {
-        verify: true,
-        verificationToken: null,
-    });
+    sendMail(email, user.verificationToken);
 
-    return res.json({
-        message: "Success",
-    });
-}
+};
 
-// const verifyUser = async (verificationToken) => {
-//     const user = await User.findOne({ verificationToken, verify: false });
-//     if (!user) {
-//         throw new MainError(404, "User not found");
-//     }
-//     user.verificationToken = "null";
-//     user.verify = true;
-//     await user.save();
-// };
-
-// const resendVerification = async (email) => {
-//     const user = await User.findOne({ email });
-//     if (!user) {
-//         throw new MainError(400, "User not found");
-//     }
-//     if (user.verify) {
-//         throw new MainError(400, "Verification has already been passed");
-//     }
-
-//     sendMail(email, user.verificationToken);
-
-// };
+const resendVerificationEmail = async (req, res) => {
+    await resendVerification(req.body.email);
+    res.json({ message: "Verification email sent" });
+};
 
 module.exports = {
     register,
@@ -159,4 +151,9 @@ module.exports = {
     currentUser,
     uploadAvatar,
     verifyEmail,
+    resendVerificationEmail,
 };
+
+
+
+
