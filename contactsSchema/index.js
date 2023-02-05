@@ -7,5 +7,5 @@ module.exports = {
     contactSchema,
     contactsUpdateSchema,
     authSchema,
-    userSchema,
+    userSchema
 };

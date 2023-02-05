@@ -5,8 +5,10 @@ const gravatar = require('gravatar');
 const path = require("path");
 const fs = require("fs/promises");
 const Jimp = require("jimp");
-const shortid = require('shortid')
+const shortid = require('shortid');
+const { v4: uuidv4 } = require('uuid');
 const { User } = require("../models/users");
+const { sendEmail} = require('../middlewares')
 
 const { JWT_SECRET } = process.env;
 
@@ -17,14 +19,16 @@ async function register(req, res, next) {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
-
     try {
         const avatarURL = gravatar.url(email);
         const savedUser = await User.create({
             email,
             password: hashedPassword,
             avatarURL,
+            verificationToken: uuidv4(),
         });
+ 
+        sendEmail(savedUser.email,savedUser.verificationToken);
 
         res.status(201).json({
             user: {
@@ -56,6 +60,10 @@ async function login(req, res, next) {
     const isPasswordValid = await bcrypt.compare(password, storedUser.password);
     if (!isPasswordValid) {
         throw new HttpError(401, "password is wrong");
+    }
+
+    if (!storedUser.verify) {
+        throw new HttpError(401, "not verified");
     }
 
     const payload = { id: storedUser._id };
@@ -109,39 +117,37 @@ async function uploadAvatar(req, res, next) {
     });
 }
 
-const verifEmail = async (verificationToken) => {
+const verifyUser = async (verificationToken) => {
     const user = await User.findOne({ verificationToken, verify: false });
     if (!user) {
-        throw new MainError(404, "User not found");
+        throw new HttpError(404, "User not found");
     }
     user.verificationToken = "null";
     user.verify = true;
     await user.save();
- 
 };
 
 const verifyEmail = async (req, res) => {
     const { verificationToken } = req.params;
-    await verifEmail(verificationToken);
+    await verifyUser(verificationToken);
     res.status(200).json({ status: "Verification successful" });
 };
 
 const resendVerification = async (email) => {
     const user = await User.findOne({ email });
     if (!user) {
-        throw new MainError(400, "User not found");
+        throw new HttpError(400, "User not found");
     }
     if (user.verify) {
-        throw new MainError(400, "Verification has already been passed");
+        throw new HttpError(400, "Verification has already been passed");
     }
 
     sendMail(email, user.verificationToken);
-
 };
 
 const resendVerificationEmail = async (req, res) => {
     await resendVerification(req.body.email);
-    res.json({ message: "Verification email sent" });
+    res.json({ message: "Email sent" });
 };
 
 module.exports = {

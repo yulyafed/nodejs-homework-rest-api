@@ -59,12 +59,12 @@ async function sendEmail(email, verificationToken) {
         to: email,
         from: "YulyaFed86@gmail.com",
         subject: "Thank you for your registration",
-        text: `Please, confirm your email address http://localhost:3001/users/verify/${verificationToken}`,
-        html: `Please, <a href="http://localhost:3001/users/verify/${verificationToken}">confirm</a> your email address`,
+        text: `Please, confirm your email address http://localhost:3001/api/users/verify/${verificationToken}`,
+        html: `Please, <a href="http://localhost:3001/api/users/verify/${verificationToken}">confirm</a> your email address`,
     }
     try {
         await sgEmail.send(msg);
-        console.log("email has been sent");
+        
     } catch (error) {
         console.error(error);
     }
