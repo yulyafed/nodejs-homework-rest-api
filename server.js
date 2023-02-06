@@ -6,7 +6,7 @@ dotenv.config();
 
 mongoose.set("strictQuery", false);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 const { HOST_URI } = process.env;
 

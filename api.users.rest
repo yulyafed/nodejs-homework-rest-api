@@ -45,7 +45,7 @@ Content-Type: image/jpeg
 ###
 
 # POST register
-POST  http://localhost:3001/api/users/register
+POST  http://localhost:3000/api/users/register
 content-type: application/json
 
 {
@@ -55,11 +55,11 @@ content-type: application/json
 ###
 
 # Get verification
-GET  http://localhost:3001/api/users/verify/234242
+GET  http://localhost:3000/api/users/verify/234242
 ###
 
 # Post message of verification
-POST   http://localhost:3001/api/users/verify
+POST   http://localhost:3000/api/users/verify
 content-type: application/json
 
 {
