@@ -3,7 +3,7 @@ POST  http://localhost:3001/api/users/register
 content-type: application/json
 
 {
-  "email": "test9@gmail.com",
+  "email": "YulyaFed86@gmail.com",
   "password": "123456789"
 }
 ###
@@ -44,3 +44,25 @@ Content-Type: image/jpeg
 --FormBoundary--
 ###
 
+# POST register
+POST  http://localhost:3000/api/users/register
+content-type: application/json
+
+{
+  "email": "test_yfe@mailinator.com",
+  "password": "123456789"
+}
+###
+
+# Get verification
+GET  http://localhost:3000/api/users/verify/234242
+###
+
+# Post message of verification
+POST   http://localhost:3000/api/users/verify
+content-type: application/json
+
+{
+  "email": "test_yfe@mailinator.com"
+}
+###

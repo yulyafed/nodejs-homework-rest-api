@@ -1,10 +1,15 @@
+const sgEmail = require("@sendgrid/mail");
+const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 const { HttpError} = require('../helpers')
 const { User } = require("./../models/users");
 const multer = require("multer");
 const path = require("path");
 
+dotenv.config();
+
 const { JWT_SECRET } = process.env;
+sgEmail.setApiKey(process.env.SENDGRID_API_KEY);
 
 async function auth(req, res, next) {
     const authHeader = req.headers.authorization || "";
@@ -49,7 +54,25 @@ const upload = multer({
     
 });
 
+async function sendEmail(email, verificationToken) {
+    const msg = {
+        to: email,
+        from: "YulyaFed86@gmail.com",
+        subject: "Thank you for your registration",
+        text: `Please, confirm your email address http://localhost:3001/api/users/verify/${verificationToken}`,
+        html: `Please, <a href="http://localhost:3001/api/users/verify/${verificationToken}">confirm</a> your email address`,
+    }
+    try {
+        await sgEmail.send(msg);
+        
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 module.exports = {
     auth,
     upload,
+    sendEmail,
+    
 };

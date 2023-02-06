@@ -1,10 +1,9 @@
 const express = require("express");
 const { tryCatchWrapper } = require("../../helpers/index.js");
-const { register, login, logout, currentUser, uploadAvatar } = require("../../controllers/users.controller");
+const { register, login, logout, currentUser, uploadAvatar, verifyEmail, resendVerificationEmail} = require("../../controllers/users.controller");
 const { auth, upload } = require("../../middlewares");
-
-const { authValidat }   = require("../../validation");
-const { authSchema } = require("../../contactsSchema");
+const { authValidat, userValidat }   = require("../../validation");
+const { authSchema, userSchema } = require("../../contactsSchema");
 
 const usersRouter = express.Router();
 
@@ -13,6 +12,8 @@ usersRouter.post("/login", authValidat(authSchema), tryCatchWrapper(login));
 usersRouter.post("/logout", tryCatchWrapper(auth), tryCatchWrapper(logout));
 usersRouter.get("/current", tryCatchWrapper(auth), tryCatchWrapper(currentUser));
 usersRouter.patch("/avatars", tryCatchWrapper(auth), upload.single("avatar"), tryCatchWrapper(uploadAvatar));
+usersRouter.get("/verify/:verificationToken", tryCatchWrapper(verifyEmail));
+usersRouter.post("/verify", userValidat(userSchema), tryCatchWrapper(resendVerificationEmail));
 
 module.exports = {
     usersRouter,
